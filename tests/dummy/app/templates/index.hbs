@@ -1,0 +1,22 @@
+{{#unless model.isAvailable}}
+	<div>
+		SpeechRecognition is not available in your browser.
+	</div>
+{{/unless}}
+<button {{action "record"}}>
+	{{if model.recorder.isRecording "Recording..." "Record"}}
+</button>
+{{#if model.recorder.isRecording}}
+	<button {{action 'stop'}}>
+		Stop
+	</button>
+{{/if}}
+<div>
+	Confidence: {{model.confidence}}
+</div>
+<div>
+	Transcript: {{model.transcript}}
+</div>
+<div>
+	Error: {{model.error}}
+</div>
