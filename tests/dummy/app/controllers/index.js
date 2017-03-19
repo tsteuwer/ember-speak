@@ -1,11 +1,21 @@
 import Ember from 'ember';
 
+const {
+	inject: {
+		service,
+	},
+} = Ember;
+
 export default Ember.Controller.extend({
-	speechRecorder: Ember.inject.service(),
+	speechRecorder: service(),
+	speechReader: service(),
 	actions: {
 		record,
 		reset,
 		stop,
+		read,
+		pause,
+		resume,
 	},
 });
 
@@ -43,4 +53,26 @@ function stop() {
 	if (recorder) {
 		recorder.stop();
 	}
+}
+
+function read() {
+	const currentReader = this.get('model.reader');
+	if (currentReader) {
+		console.log('destroying');
+		currentReader.destroy();
+	}
+
+	const speechReader = this.get('speechReader');
+	const reader = speechReader.getNewReader(this.get('model.textToRead'));
+	
+	this.set('model.reader', reader);
+	reader.play();
+}
+
+function pause() {
+	this.get('model.reader').pause();
+}
+
+function resume() {
+	this.get('model.reader').resume();
 }

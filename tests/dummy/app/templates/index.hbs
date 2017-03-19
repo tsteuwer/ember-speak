@@ -12,11 +12,34 @@
 	</button>
 {{/if}}
 <div>
-	Confidence: {{model.confidence}}
-</div>
-<div>
 	Transcript: {{model.transcript}}
 </div>
 <div>
 	Error: {{model.error}}
+</div>
+
+
+{{#unless model.readerAvailable}}
+	<div>
+		SpeechUtterance is not available in your browser.
+	</div>
+{{/unless}}
+<div>
+	{{input value=(mut model.textToRead)}}
+	<button {{action "read"}}>
+		{{if model.reader.isPlaying "Reading..." "Read"}}
+	</button>
+	{{#if model.reader.isPlaying}}
+		<button {{action 'pause'}}>
+			Pause
+		</button>
+		<button {{action 'resume'}}>
+			Resume
+		</button>
+		{{#if model.reader.isPlaying}}
+			Playing...
+		{{else if model.read.isPaused}}
+			Paused...
+		{{/if}}
+	{{/if}}
 </div>
