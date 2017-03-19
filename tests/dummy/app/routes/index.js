@@ -1,13 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-	speechRecognizer: Ember.inject.service(),
+	speechRecorder: Ember.inject.service(),
 	model() {
-		const speechRecognizer = this.get('speechRecognizer');
-		speechRecognizer.setLanguage('en-US');
+		const speechRecorder = this.get('speechRecorder');
+		speechRecorder.setLanguage('en-US');
 		
 		return Ember.Object.create({
-			isAvailable: speechRecognizer.get('isAvailable'),
+			isAvailable: speechRecorder.get('isAvailable'),
 		});
 	},
 	setupController(controller, model) {

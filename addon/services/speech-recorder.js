@@ -46,6 +46,28 @@ function init() {
 	this.set('_API', window.SpeechRecognition || window.webkitSpeechRecognition);
 }
 
+/**
+ * Returns a new recorder object.
+ * @public
+ * @return {Recorder}
+ * @example
+ *
+ *		if (!server.get('isAvailable')) {
+	 *		return;
+ *		}
+ *
+ *		const recorder = service.getRecorder();	
+ *		recorder.on('transcribed', text => {
+ *			console.log(text);
+ *		}).on('error', error => {
+ *			console.debug(error);
+ *		});
+ *		recorder.start();
+ *
+ *    In your templates, there is a computed property you can watch to see if its recording...
+ *
+ *    {{if model.recorder.isRecording "Recording" "Record"}}
+ */
 function getRecorder() {
 	const isAvailable = this.get('isAvailable');
 

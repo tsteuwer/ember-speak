@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-	speechRecognizer: Ember.inject.service(),
+	speechRecorder: Ember.inject.service(),
 	actions: {
 		record,
 		reset,
@@ -14,9 +14,9 @@ function record() {
 	this.send('reset');
 
 	const model = this.get('model');
-	const speechRecognizer = this.get('speechRecognizer');
+	const speechRecorder = this.get('speechRecorder');
 
-	const recorder = speechRecognizer.getRecorder();
+	const recorder = speechRecorder.getRecorder();
 
 	recorder.on('transcribed', (text) => {
 		model.set('transcript', model.get('transcript') + text);

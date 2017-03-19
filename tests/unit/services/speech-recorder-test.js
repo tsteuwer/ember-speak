@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('service:speech-recognizer', 'Unit | Service | speech recognizer', {
+moduleFor('service:speech-recorder', 'Unit | Service | speech recorder', {
   // Specify the other units that are required for this test.
   // needs: ['service:foo']
 });
