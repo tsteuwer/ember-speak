@@ -30,16 +30,14 @@
 		{{if model.reader.isPlaying "Reading..." "Read"}}
 	</button>
 	{{#if model.reader.isPlaying}}
+		Playing...
 		<button {{action 'pause'}}>
 			Pause
 		</button>
+	{{else if model.reader.isPaused}}
+		Paused
 		<button {{action 'resume'}}>
 			Resume
 		</button>
-		{{#if model.reader.isPlaying}}
-			Playing...
-		{{else if model.read.isPaused}}
-			Paused...
-		{{/if}}
 	{{/if}}
 </div>

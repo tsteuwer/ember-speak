@@ -8,6 +8,7 @@ const {
 export default Ember.Service.extend({
 	isAvailable: computed.and('_UtterAPI', '_SynthAPI').readOnly(),
 	_lang: 'en-US',
+	_lastReader: null,
 	init,
 	getNewReader,
 	setLanguage,
@@ -40,26 +41,20 @@ function getNewReader(text) {
 
 	const utterance = this._getNewUtterance(text);
 	const synth = this.get('_SynthAPI');
-
 	const Reader = Ember.Object.extend(Ember.Evented, {
 		isPaused: computed.bool('_paused').readOnly(),
 		isPlaying: computed.bool('_playing').readOnly(),
 		_paused: false,
 		_playing: false,
 	});
-
-	function onPause() {
-		read.setProperties({
-			_paused: true,
-			_playing: false,
-		});
-	}
+	let pauseResumeTimer;
 
 	function onPlay() {
 		read.setProperties({
 			_paused: false,
 			_playing: true,
 		});
+
 	}
 
 	function onEnd() {
@@ -67,42 +62,76 @@ function getNewReader(text) {
 			_paused: false,
 			_playing: false,
 		});
+
+		clearTimeout(pauseResumeTimer);
+		utterance.removeEventListener('start', onPlay);
+		utterance.removeEventListener('resume', onPlay);
+		utterance.removeEventListener('end', onEnd);
+		utterance.removeEventListener('error', onError);
 	}
 
 	function onError(event) {
 		read.trigger('error', event);
 	}
 
-	utterance.addEventListener('pause', onPause);
+	utterance.addEventListener('start', onPlay);
 	utterance.addEventListener('resume', onPlay);
-	utterance.addEventListener('cancel', onEnd);
 	utterance.addEventListener('end', onEnd);
 	utterance.addEventListener('error', onError);
-	utterance.addEventListener('start', onPlay);
 
 	const read = Reader.create({
 		play() {
+			clearTimeout(pauseResumeTimer);
+			const lastReader = this.get('_lastReader');
+			if (lastReader) {
+				lastReader.destroy();
+			}
+
 			synth.cancel();
-			synth.speak(utterance);	
+			synth.speak(utterance);
+			console.log(utterance); // IMPORTANT!!! This must be here as it helps with the events firing. I dont know why, but chrome needs this.
+
+			pauseResumeTimer = setTimeout(function startTimerAgain() {
+				clearTimeout(pauseResumeTimer);
+				synth.pause();
+				synth.resume();
+				pauseResumeTimer = setTimeout(startTimerAgain, 10000);
+			}, 10000);
 		},
 		pause() {
+			clearTimeout(pauseResumeTimer);
 			synth.pause();
+			read.setProperties({
+				_paused: true,
+				_playing: false,
+			});
 		},
 		resume() {
+			clearTimeout(pauseResumeTimer);
 			synth.resume();
+			console.log(utterance); // IMPORTANT!!! This must be here as it helps with the events firing. I dont know why, but chrome needs this.
+
+			pauseResumeTimer = setTimeout(function startTimerAgainResume() {
+				clearTimeout(pauseResumeTimer);
+				synth.pause();
+				synth.resume();
+				pauseResumeTimer = setTimeout(startTimerAgainResume, 10000);
+			}, 10000);
 		},
 		cancel() {
+			clearTimeout(pauseResumeTimer);
 			synth.cancel();
 		},
 		willDestroy() {
-			utterance.removeEventListener('pause', onPause);
+			clearTimeout(pauseResumeTimer);
+			utterance.removeEventListener('start', onPlay);
 			utterance.removeEventListener('resume', onPlay);
-			utterance.removeEventListener('cancel', onEnd);
 			utterance.removeEventListener('end', onEnd);
 			utterance.removeEventListener('error', onError);
-			utterance.removeEventListener('start', onPlay);
 		}
 	});
+	
+	this.set('_lastReader', read);
 
 	return read;
 }
