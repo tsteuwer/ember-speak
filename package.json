@@ -1,17 +1,22 @@
 {
   "name": "ember-speak",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Add text-to-speech (TTS) or speech-to-text (STT) to your Ember app.",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+		"text-to-speech",
+		"speech-to-text",
+		"TTS",
+		"STT",
+		"speech"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "Troy Steuwer",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": "https://github.com/tsteuwer/ember-speak",
   "scripts": {
     "build": "ember build",
     "start": "ember server",
