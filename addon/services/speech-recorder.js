@@ -78,11 +78,14 @@ function getRecorder() {
 	const recognizer = this._getNewRecorder();
 	const recorder = Recorder.create({
 		_available: true,
-		start: () => {
+		start() {
 			recognizer.start();
 		},
-		stop: function() {
+		stop() {
 			recognizer.stop();
+		},
+		restart() {
+			this.set('fullTranscript', '');
 		},
 	});
 

@@ -18,6 +18,11 @@ import Ember from 'ember';
 
 const {
 	computed,
+	run: {
+		next,
+		later,
+		cancel: cancelTimer,
+	},
 } = Ember;
 
 const PAUSE_RESUME_TIMER = 10000;
@@ -32,6 +37,7 @@ export default Ember.Object.extend(Ember.Evented, {
 	_didPlay: false,
   _pauseResumeTimer: null,
   _utterance: null,
+	_synth: null,
 	init,
 	play,
 	pause,
@@ -102,9 +108,9 @@ function play() {
 	//IMPORTANT!! Do not remove: Logging the object out fixes some onend firing issues.
 	console.log(utter);
 	// Placing the speak invocation inside a callback fixes ordering and onend issues
-	setTimeout(() => {
+	next(() => {
 		synth.speak(utter); 
-	}, 0);
+	});
 
 	this._startTimer();
 }
@@ -146,9 +152,9 @@ function resume() {
 	//IMPORTANT!! Do not remove: Logging the object out fixes some onend firing issues.
 	console.log(utter);
 	// Placing the speak invocation inside a callback fixes ordering and onend issues
-	setTimeout(() => {
+	next(() => {
 		synth.resume();
-	}, 0);
+	});
 
 	this._startTimer();
 }
@@ -163,7 +169,11 @@ function cancel() {
 	this._clearTimer();
 	this._clearEvents();
 	this.get('_synth').cancel();
-	this.set('_canceled', true);
+	this.setProperties({
+		_canceled: true,
+		_playing: false,
+		_paused: false,
+	});
 }
 
 /**
@@ -185,7 +195,7 @@ function willDestroy() {
  * @return {undefined}
  */
 function _clearTimer() {
-	clearTimeout(this.get('_pauseResumeTimer'));
+	cancelTimer(this.get('_pauseResumeTimer'));
 }
 
 /**
@@ -214,17 +224,17 @@ function _startTimer() {
 		utter = this.get('_utterance'),
 		that = this;
 
-	this.set('_pauseResumeTimer', setTimeout(function pauseResumeTimer() {
+	this.set('_pauseResumeTimer', later(function pauseResumeTimer() {
 		that._clearTimer();
 		synth.pause();
 
 		//IMPORTANT!! Do not remove: Logging the object out fixes some onend firing issues.
 		console.log(utter);
 		// Placing the speak invocation inside a callback fixes ordering and onend issues
-		setTimeout(() => {
+		next(() => {
 			synth.resume();
-		}, 0);
+		});
 
-		that.set('_pauseResumeTimer', setTimeout(pauseResumeTimer, PAUSE_RESUME_TIMER));
+		that.set('_pauseResumeTimer', later(pauseResumeTimer, PAUSE_RESUME_TIMER));
 	}, PAUSE_RESUME_TIMER));
 }
