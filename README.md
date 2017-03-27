@@ -6,6 +6,10 @@
 
 Add speech-to-text (STT) and text-to-speech (TTS) to your Ember app.
 
+## Demo
+
+A demo is setup over at [https://tsteuwer.github.io/ember-speak/](https://tsteuwer.github.io/ember-speak/).
+
 ## Browser Support
 
 [Can I Use?](http://caniuse.com/#feat=speech-synthesis)
