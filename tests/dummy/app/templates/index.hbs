@@ -1,43 +1,105 @@
-{{#unless model.isAvailable}}
-	<div>
-		SpeechRecognition is not available in your browser.
+<div class="container">
+	<div class="pull-right badges">
+		<a class="top-badge" href={{model.npmLink}}>
+			<img src={{model.npmBadge}} />
+		</a>
+		<a class="top-badge" href={{model.travisLink}}>
+			<img src={{model.travisBadge}} />
+		</a>
+		<a class="top-badge github-logo" href={{model.githubLink}}>
+			<img width="32px" height="32px" src="/images/GitHub-Mark-32px.png" />
+		</a>
 	</div>
-{{/unless}}
-<button {{action "record"}}>
-	{{if model.recorder.isRecording "Recording..." "Record"}}
-</button>
-{{#if model.recorder.isRecording}}
-	<button {{action 'stop'}}>
-		Stop
-	</button>
-{{/if}}
-<div>
-	Transcript: {{model.transcript}}
-</div>
-<div>
-	Error: {{model.error}}
-</div>
-
-
-{{#unless model.readerAvailable}}
-	<div>
-		SpeechUtterance is not available in your browser.
+	<h1>Ember Speak</h1>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<strong>Speech-to-Text Example</strong>
+		</div>
+		<div class="panel-body">
+			{{#unless model.isAvailable}}
+				<div class="alert alert-danger">
+					SpeechRecognition is not available in your browser.
+				</div>
+			{{else}}
+				<div class="row">
+					<div class="col-sm-4 col-md-3 col-lg-2">
+						<div class="btn-group" role="group">
+							<button class="btn btn-success" {{action "record"}} disabled={{if model.recorder.isRecording "disabled"}}>
+								Record	
+							</button>
+							<button class="btn btn-danger" {{action 'stop'}} disabled={{unless model.recorder.isRecording "disabled"}}>
+								Stop
+							</button>
+						</div>
+						<hr class="visible-xs">
+					</div>
+					<div class="col-sm-8 col-md-9 col-lg-10">
+						Transcript
+						<hr>
+						{{model.transcript}}
+						{{#if model.error}}
+							<div class="alert alert-warning">
+								Error: {{model.error}}
+							</div>
+						{{/if}}
+					</div>
+				</div>
+			{{/unless}}
+		</div>
 	</div>
-{{/unless}}
-<div>
-	{{input value=(mut model.textToRead)}}
-	<button {{action "read"}}>
-		{{if model.reader.isPlaying "Reading..." "Read"}}
-	</button>
-	{{#if model.reader.isPlaying}}
-		Playing...
-		<button {{action 'pause'}}>
-			Pause
-		</button>
-	{{else if model.reader.isPaused}}
-		Paused
-		<button {{action 'resume'}}>
-			Resume
-		</button>
-	{{/if}}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<strong>Text-to-Speech Example</strong>
+		</div>
+		<div class="panel-body">
+			{{#unless model.readerAvailable}}
+				<div>
+					SpeechUtterance is not available in your browser.
+				</div>
+			{{else}}
+				<div class="row">
+					<div class="col-sm-8 col-md-9">
+						{{textarea class="form-control" value=model.textToRead placeholder="Enter some text here..."}}
+					</div>
+					<div class="col-sm-4 col-md-3">
+						<div class="btn-group" role="group">
+							<button class="btn btn-success" {{action "read"}}>
+								Read
+							</button>
+							<button class="btn btn-danger" {{action 'pause'}} disabled={{unless model.reader.isPlaying "disabled"}}>
+								Pause
+							</button>
+							<button class="btn" {{action 'resume'}} disabled={{unless model.reader.isPaused "disabled"}}>
+								Resume
+							</button>
+						</div>
+					</div>
+				</div>
+			{{/unless}}
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<strong>Installation</strong>
+		</div>
+		<div class="panel-body">
+			<div>
+				<p>Install the addon.</p>
+<pre>ember install ember-speak</pre>
+				<p>Inject the service(s) into whichever object you need it in.</p>
+<pre>import Ember from 'ember';
+
+export default Route.Controller.extend({
+	speechRecorder: Ember.inject.service(),
+	speechReader: Ember.inject.service(),
+	model() {
+		return Ember.Object.create({
+			recorderAvailable: this.get('speechRecorder.isAvailable'),
+			readerAvailable: this.get('speechReader.isAvailable'),
+		});
+	},
+});</pre>
+			</div>
+		</div>
+	</div>
 </div>

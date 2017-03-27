@@ -12,6 +12,7 @@
   ],
   "license": "MIT",
   "author": "Troy Steuwer",
+	"demoUURL": "https://tsteuwer.github.io/ember-speak/",
   "directories": {
     "doc": "doc",
     "test": "tests"

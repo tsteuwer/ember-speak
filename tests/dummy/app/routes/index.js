@@ -16,6 +16,11 @@ export default Ember.Route.extend({
 		speechReader.setLanguage('en-US');
 		
 		return Ember.Object.create({
+			githubLink: 'https://github.com/tsteuwer/ember-speak',
+			travisBadge: 'https://travis-ci.org/tsteuwer/ember-speak.svg?branch=master',
+			travisLink: 'https://travis-ci.org/tsteuwer/ember-speak',
+			npmBadge: 'https://badge.fury.io/js/ember-speak.svg',
+			npmLink: 'http://badge.fury.io/js/ember-speak',
 			isAvailable: speechRecorder.get('isAvailable'),
 			readerAvailable: speechReader.get('isAvailable'),
 		});
