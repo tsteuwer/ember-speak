@@ -25,7 +25,6 @@ function record() {
 
 	const model = this.get('model');
 	const speechRecorder = this.get('speechRecorder');
-
 	const recorder = speechRecorder.getRecorder();
 
 	recorder.on('transcribed', (text) => {
