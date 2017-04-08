@@ -102,4 +102,19 @@ export default Route.Controller.extend({
 			</div>
 		</div>
 	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<strong>Example: Read Contents Component</strong>
+		</div>
+		<div class="panel-body">
+			<p>One thing I wish sites did were to allow their articles to be read by my phone. This is now as simple as creating a single component. So, while I'm on my mobile device, I can hit play and let it read the entire thing to me while I drive. Here's an example:</p>
+			<strong>speakable-component: <a href="https://github.com/tsteuwer/ember-speak/blob/master/tests/dummy/app/components/speakable-component.js">JavaScript</a>, <a href="https://github.com/tsteuwer/ember-speak/blob/master/tests/dummy/app/templates/components/speakable-component.hbs">Template</a></strong>
+			<hr>
+			{{#speakable-component}}
+				Dolphins are a widely distributed and diverse group of aquatic mammals. They are an informal grouping within the order Cetacea, excluding whales and porpoises, so to zoologists the grouping is paraphyletic. The dolphins comprise the extant families Delphinidae (the oceanic dolphins), Platanistidae (the Indian river dolphins), Iniidae (the new world river dolphins), and Pontoporiidae (the brackish dolphins), and the extinct Lipotidae (baiji or Chinese river dolphin). There are 40 extant species of dolphins. Dolphins, alongside other cetaceans, belong to the clade Cetartiodactyla with even-toed ungulates. Their closest living relatives are the hippopotamuses, having diverged about 40 million years ago.
+			<br/>
+			<a href="https://en.wikipedia.org/wiki/Dolphin">From Wikipedia</a>
+			{{/speakable-component}}
+		</div>
+	</div>
 </div>
