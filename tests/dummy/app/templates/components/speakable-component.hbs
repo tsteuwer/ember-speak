@@ -1,0 +1,10 @@
+<div aria-label="Read this article aloud.">
+	{{#if readingAvailable}}
+		<span class="glyphicon glyphicon-{{if reader.isPlaying 'stop' 'play'}}" {{action 'togglePlaying'}}></span>
+	{{else}}
+		<div class="alert alert-warning">
+			Your browser doesn't support SpeechSynthesis.
+		</div>
+	{{/if}}
+</div>
+{{yield}}

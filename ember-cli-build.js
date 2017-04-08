@@ -4,7 +4,7 @@ var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 module.exports = function(defaults) {
   var app = new EmberAddon(defaults, {
-		prepend: 'https://tsteuwer.github.io/ember-speak/',
+		prepend: 'https://tsteuwer.github.io/ember-speak/'
     // Add options here
   });
 
