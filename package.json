@@ -1,6 +1,6 @@
 {
   "name": "ember-speak",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Add text-to-speech (TTS) or speech-to-text (STT) to your Ember app.",
   "keywords": [
     "ember-addon",
